@@ -1,0 +1,56 @@
+program MyProject
+  dim k,y as byte
+
+  sub function tmr(dim tempo as byte) as longint
+       for k=1 to tempo * 2
+         tmr1L= 0xDC
+         tmr1H= 0x0B
+         t1con =49
+         while pir1.0 = 0
+         wend
+          pir1.0 = 0
+      next k
+       result = 0
+  end sub
+ 
+   sub function tmrInt(dim tempo as byte) as longint
+       for k=1 to tempo * 2
+         tmr1L= 0xDC
+         tmr1H= 0x0B
+         t1con =49
+         while pir1.0 = 0
+         wend
+          pir1.0 = 0
+      next k
+       result = 0
+  end sub
+
+  
+  sub procedure interrupt
+     portc = 0
+     for y= 1 to 2
+      portc = 1
+      tmrInt(3)
+      portc = 2
+      tmrInt(3)
+      next y
+     intcon.1=0
+  end sub
+main:
+'   Main program
+trisb = 1
+trisc = 0
+portc = 0
+
+'interrupt portb0
+option_reg=64
+intcon=144
+
+while true
+'timer1 ogni due secondi
+    portc = 1
+    tmr(2)
+    portc = 2
+    tmr(2)
+wend
+end.
